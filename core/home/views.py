@@ -38,9 +38,10 @@ def index(request):
 
 # Create your views here.
 @api_view(['GET','POST'])
+# Post method two pass value and it wil display and save then GET method get the data from models
 def person(request):
-    if request.GET:
-        objs=person.objects.all() #fetch all the object from the db
+    if request.method=='GET':
+        objs=Person.objects.all() #fetch all the object from the db
         serializer=PeopleSerializer(objs,many=True)
         # the serializer serialize the object the list contains two or many objects so we use many=True
         return Response(serializer.data)
@@ -48,8 +49,9 @@ def person(request):
         data=request.data
         serializer=PeopleSerializer(data=data)
         # if the serializer in post we input the data the value it will check the data is serializedor not
-        #whether the data is validated or not to chec we use if statement
+        #whether the data is validated or not to check we use if statement
         if serializer.is_valid():
+            # it will check the field is if it is empty it will show required message
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
