@@ -83,7 +83,7 @@ def person(request):
             return Response(serializer.data)
         return Response(serializer.errors)
     
-    # DELETE - 
+    # DELETE - It will delete by using ID
     else:
         data=request.data
         #get the model id and use as a input on it
