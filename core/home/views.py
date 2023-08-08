@@ -18,6 +18,7 @@ def index(request):
             'course_provider':'Coursera',
         }
     if request.method=="GET":
+        print(request.GET.get('search'))
         print('You Hit a GET Method')
         return Response(courses)
     elif request.method=="POST":
