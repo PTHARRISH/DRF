@@ -23,7 +23,7 @@ def index(request):
         return Response(courses)
     elif request.method=="POST":
         data=request.data
-        print(data)
+        print(data['name'])
         print('You Hit a POST Method')
         return Response(courses)
     elif request.method=="PUT":
