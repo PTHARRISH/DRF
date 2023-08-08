@@ -18,12 +18,15 @@ def index(request):
             'course_provider':'Coursera',
         }
     if request.method=="GET":
-        print(request.GET.get('search'))
+        print(request.GET.get('search'))#search to display the name
         print('You Hit a GET Method')
         return Response(courses)
     elif request.method=="POST":
         data=request.data
-        print(data['name'])
+        #get the data 
+        # from the postman and change the method to post and click raw and click plaintext to json 
+        # type the data and click send
+        print(data['name'])#get the data key
         print('You Hit a POST Method')
         return Response(courses)
     elif request.method=="PUT":
