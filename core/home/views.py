@@ -1,5 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .models import *
+from .serializer import PeopleSerializer
 
 #@api view - convert a function into api view json drf response
 
@@ -35,3 +37,20 @@ def index(request):
 
 
 # Create your views here.
+@api_view(['GET','POST'])
+def person(request):
+    if request.GET:
+        objs=person.objects.all() #fetch all the object from the db
+        serializer=PeopleSerializer(objs,many=True)
+        # the serializer serialize the object the list contains two or many objects so we use many=True
+        return Response(serializer.data)
+    else:
+        data=request.data
+        serializer=PeopleSerializer(data=data)
+        # if the serializer in post we input the data the value it will check the data is serializedor not
+        #whether the data is validated or not to chec we use if statement
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
