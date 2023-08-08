@@ -37,7 +37,7 @@ def index(request):
 
 
 # Create your views here.
-@api_view(['GET','POST','PUT','PATCH'])
+@api_view(['GET','POST','PUT','PATCH','DELETE'])
 # Post method two pass value and it wil display and save then GET method get the data from models
 def person(request):
     if request.method=='GET':
@@ -82,4 +82,15 @@ def person(request):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
+    
+    # DELETE - 
+    else:
+        data=request.data
+        #get the model id and use as a input on it
+        objs=Person.objects.get(id=data['id'])
+        # return Response({objs.id})
+        objs.delete()
+        return Response({"message :person deleted"})
+
+
 
