@@ -37,7 +37,7 @@ def index(request):
 
 
 # Create your views here.
-@api_view(['GET','POST'])
+@api_view(['GET','POST','PUT','PATCH'])
 # Post method two pass value and it wil display and save then GET method get the data from models
 def person(request):
     if request.method=='GET':
@@ -45,10 +45,37 @@ def person(request):
         serializer=PeopleSerializer(objs,many=True)
         # the serializer serialize the object the list contains two or many objects so we use many=True
         return Response(serializer.data)
-    else:
+    elif request.method=='POST':
         data=request.data
         serializer=PeopleSerializer(data=data)
         # if the serializer in post we input the data the value it will check the data is serializedor not
+        #whether the data is validated or not to check we use if statement
+        if serializer.is_valid():
+            # it will check the field is if it is empty it will show required message
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+    
+    #PUT,PATCH -Its is used for update the data
+    #PUT-doesnt support partial update, you need to pass all data new data will replace the old data
+    elif request.method=='PUT':
+        data=request.data
+        serializer=PeopleSerializer(data=data)
+        # if the serializer in put we input the data the value it will check the data is serializedor not
+        #whether the data is validated or not to check we use if statement
+        if serializer.is_valid():
+            # it will check the field is if it is empty it will show required message
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+    
+    #Patch -It supports partial updatae in this method .you need to update the particular field will be pass on it
+    elif request.method=='PATCH':
+        data=request.data
+        #get the model id and use as a input on it
+        objs=Person.objects.get(id=data['id'])
+        serializer=PeopleSerializer(objs,data=data,partial=True)
+        # if the serializer in patch we input the data the value it will check the data is serializedor not
         #whether the data is validated or not to check we use if statement
         if serializer.is_valid():
             # it will check the field is if it is empty it will show required message
